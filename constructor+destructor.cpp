@@ -22,6 +22,9 @@ class YouTubeChannel{
         Name = name;
         ownerName = owner;
     }
+    YouTubeChannel(const YouTubeChannel &channel): 
+        Name(channel.Name), ownerName(channel.ownerName), 
+        subscribersCount(channel.subscribersCount), published_videos(channel.published_videos) {}
 
 
     void GetInfo()
@@ -29,11 +32,11 @@ class YouTubeChannel{
         cout<<"Name: "<<Name<<endl;
         cout<<"Owner Name: "<<ownerName<<endl;
         cout<<"Subscribers count: "<<subscribersCount<<endl;
-        cout<<"Published Viedos:- "<<endl;
+        cout<<"Published Viedos:- ";
     
         for(auto video: published_videos)
-            cout<<video<<endl;
-        cout<<endl;
+            cout<<video<<", ";
+        cout<<endl<<endl;
     }
 
     void Subscribe()
@@ -64,6 +67,17 @@ int main()
     channel1.publish("OOP in C++");
     channel1.publish("encapsulation");
     channel1.GetInfo();
+
+    YouTubeChannel channel2("Errichto", "Errichto");
+    for(int i=0;i<1000;i++) channel2.Subscribe();
+    channel2.publish("Dynamic Programming");
+
+    YouTubeChannel channel3(channel2);
+    for(int j=0;j<200;j++) channel3.Unsubscribe();
+    channel3.publish("Graphs");
+
+    channel2.GetInfo();
+    channel3.GetInfo();
 
     return 0;
 
