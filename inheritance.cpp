@@ -8,27 +8,25 @@ class YouTubeChannel{
     // Their value should only be allowed to change through member function of the class
     // This helps in maintaining menaingful attribute values.
     // Ex: we can apply a condition which doesn't allows to reduce subscriber count below 0
-    private:
+    private:  // private data members cannot be accesed in derived classes of this class
     string name;
-    string ownerName;
     int subscribersCount=0;
     list<string> published_videos;
+
+    protected:  // can be accessed in derived classes but not outside of that
+    string ownerName;
 
     public:
     YouTubeChannel() 
     { cout<<"Default constructor is called only if no other cnstructor is specified or the object is initalized without any parameters!\n";}
-    YouTubeChannel(string Name, string owner) // Constructor
-    {
+    YouTubeChannel(string Name, string owner){ // Constructor
         name = Name;
         ownerName = owner;
     }
     YouTubeChannel(const YouTubeChannel &channel): 
         name(channel.name), ownerName(channel.ownerName), 
         subscribersCount(channel.subscribersCount), published_videos(channel.published_videos) {}
-
-
-    void getInfo()
-    {
+    void getInfo(){
         cout<<"Name: "<<name<<endl;
         cout<<"Owner Name: "<<ownerName<<endl;
         cout<<"Subscribers count: "<<subscribersCount<<endl;
@@ -38,27 +36,25 @@ class YouTubeChannel{
             cout<<video<<", ";
         cout<<endl<<endl;
     }
-
-    void subscribe()
-    {
+    void subscribe(){
         subscribersCount++;
     }
-
-    void unsubscribe()
-    {
+    void unsubscribe(){
         if(subscribersCount>0)
             subscribersCount--;
     }
-
-    void publish(string video)
-    {
+    void publish(string video){
         published_videos.push_back(video);
     }
-
-
-
 };
 
+class CookingYoutubeChannel: public YouTubeChannel{
+    public:
+    CookingYoutubeChannel(string Name, string OwnerName): YouTubeChannel(Name,OwnerName) {}
+    void practice(){
+        cout<<ownerName<<" is practicing new recipies, learning about more spices, having fun!"<<endl;
+    }
+};
 
 int main()
 {
@@ -68,17 +64,30 @@ int main()
     channel1.publish("OOP in C++");
     channel1.publish("encapsulation");
     channel1.getInfo();
+    //channel1.practice().  ** function of sub class not available for super clas
 
-    YouTubeChannel channel2("Errichto", "Errichto");
-    for(int i=0;i<1000;i++) channel2.subscribe();
-    channel2.publish("Dynamic Programming");
 
-    YouTubeChannel channel3(channel2);
-    for(int j=0;j<200;j++) channel3.unsubscribe();
-    channel3.publish("Graphs");
+    CookingYoutubeChannel rannaGhor("Ranna Ghor","Susmita");
+    rannaGhor.subscribe();
+    rannaGhor.subscribe();
+    rannaGhor.unsubscribe();
+    rannaGhor.subscribe();
+    rannaGhor.subscribe();
 
-    channel2.getInfo();
-    channel3.getInfo();
+    rannaGhor.publish("Mangsho Biriyani");
+    rannaGhor.publish("Mach Bhaja");
+    rannaGhor.getInfo();
+
+    CookingYoutubeChannel niramishBhojon("Niramish Bhojon","Sankar");
+    niramishBhojon.subscribe();
+    niramishBhojon.subscribe();
+
+    niramishBhojon.publish("Poneer Curry");
+    niramishBhojon.getInfo();
+
+    rannaGhor.practice();
+    niramishBhojon.practice();
+
 
     return 0;
 
